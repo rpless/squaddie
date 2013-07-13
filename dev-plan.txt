@@ -1,0 +1,36 @@
+Squaddie Dev Plan
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+The end goal of Squaddie is to make a networked, multiplayer game, in which players use a AI's that they have written to achieve a set of goals that the server provides them with. In addition, each squad member will have a setof microgoals that it must achieve in order to complete the player's goals.
+
+
+Iteration 1:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+The first iteration will be a single-player, offline version, in which the user has only one squad member with a single capture goal. In order to achieve goals the player will issue directives to each squad member on tick. The only directive in this versino will be the move-toward directive.
+
+Iteration 2:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+This version will introduce multiple goals. Capture goals will be extended to have a certain number of ticks associated with them. The hold position directive will be introduced.
+
+Iteration 3:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+This version will introduce a new type of goal, the destroy goal. Squad members will now have the ability to attack and destroy various objects. The attack directive will be introduced.
+
+Iteration 4: 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+This version will introduce multiple squad members and rudimentary collision between world entities.
+
+Iteration 5:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+This version will introduce squad member specific microgoals.
+
+Iteration 6:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+This version will introduce enemies. Squad members will now have health. Kill goals will be introduced.
+
+Iteration 7:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+This version introduces a vary bare bones to play against. A Player will now have a base (which will be the enemy's final capture goal). Squad members will spawn after a certain amount of time.
+
+Iteration 9:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+This version will introduce the networked component of the game. The game will be migrated to use universe.
