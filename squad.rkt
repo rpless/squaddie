@@ -1,6 +1,5 @@
 #lang racket
-(require (only-in "data.rkt" SPEED)
-         2htdp/image)
+(require 2htdp/image "utilities/2vector.rkt")
 
 ;; Squaddie
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -12,6 +11,10 @@
 
 ;; A squaddie is a (squaddie Complex)
 (struct squaddie (pos) #:transparent)
+
+;; Constants
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(define SPEED 5)
 
 ;; Update
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -27,11 +30,6 @@
         (let* ([npos (- goal pos)]
                [respos (/ npos (magnitude npos))])
           (squaddie (+ pos (* SPEED respos)))))))
-
-;; Complex Complex -> Real
-(define (distance c1 c2)
-  (sqrt (+ (sqr (- (real-part c2) (real-part c1)))
-           (sqr (- (imag-part c2) (imag-part c1))))))
 
 ;; Rendering
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -9,8 +9,7 @@
 
 ;; Integer Integer Scene -> Scene
 (define (draw-cell width height scn)
-  (place-image (overlay (circle 1 'solid 'red)
-                        (rectangle CELL-SIZE CELL-SIZE 'outline 'purple))
+  (place-image (rectangle CELL-SIZE CELL-SIZE 'outline 'purple)
                (grid-x->pixel width)
                (grid-y->pixel height)
                scn))

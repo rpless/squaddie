@@ -48,7 +48,8 @@
                (draw-world sworld)))
 
 (define (draw-goals goal scn)
-  (place-image (triangle 20 'outline 'green)
+  (place-image (overlay (circle 1 'solid 'red)
+                        (triangle 20 'outline 'green))
                (real-part goal)
                (imag-part goal)
                scn))
