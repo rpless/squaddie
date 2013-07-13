@@ -10,34 +10,23 @@
 ;; Data Definition
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; A squaddie is a (squaddie Complex Goal)
-;; The complex is in world coordinates and the goal is Grid coordinates.
-(struct squaddie (pos goal) #:transparent)
-
-;; A Goal is oneof:
-;; None
-;; Location
-
-;; A None is a #f
-;; A Location is a Complex
+;; A squaddie is a (squaddie Complex)
+(struct squaddie (pos) #:transparent)
 
 ;; Update
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Squaddie -> Squaddie
-(define (tick-squaddie sq)
-  (if (squaddie-goal sq)
-      (move-squaddie sq)
-      sq))
+;; Squaddie Goal -> Squaddie
+(define (tick-squaddie sq goal)
+  (move-squaddie sq goal))
 
 ;; Squaddie -> Squaddie
-(define (move-squaddie sq)
-  (let ([pos (squaddie-pos sq)]
-        [goal (squaddie-goal sq)])
+(define (move-squaddie sq goal)
+  (let ([pos (squaddie-pos sq)])
     (if (<= (distance pos goal) SPEED)
-        (squaddie goal #f)
+        (squaddie goal)
         (let* ([npos (- goal pos)]
                [respos (/ npos (magnitude npos))])
-          (squaddie (+ pos (* SPEED respos)) (squaddie-goal sq))))))
+          (squaddie (+ pos (* SPEED respos)))))))
 
 ;; Complex Complex -> Real
 (define (distance c1 c2)
@@ -49,14 +38,8 @@
 
 ;; Squaddie Scene -> Scene
 (define (draw-squaddie s scn)
-  (let ([pos (squaddie-pos s)]
-        [goal (squaddie-goal s)])                 
+  (let ([pos (squaddie-pos s)])
     (place-image (circle 5 'solid 'blue)
                  (real-part pos)
                  (imag-part pos)
-                 (if goal
-                     (place-image (triangle 10 'solid 'green)
-                                  (real-part goal)
-                                  (imag-part goal)
-                                  scn)
-                     scn))))
+                 scn)))

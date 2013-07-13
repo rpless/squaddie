@@ -8,9 +8,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (run)
-  (big-bang (list (squaddie 50+50i 500+500i)
-                  (squaddie 500+50i 100+150i))
+  (big-bang (world (squaddie 50+50i) '(500+500i 200+345i))
             (to-draw draw-world)
-            (on-tick tick)))
+            (on-tick tick)
+            (stop-when game-over? draw-end-game)))
 
 
