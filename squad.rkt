@@ -27,9 +27,7 @@
   (let ([pos (squaddie-pos sq)])
     (if (<= (distance pos goal) SPEED)
         (squaddie goal)
-        (let* ([npos (- goal pos)]
-               [respos (/ npos (magnitude npos))])
-          (squaddie (+ pos (* SPEED respos)))))))
+        (squaddie (+ pos (* SPEED (normalize (- goal pos))))))))
 
 ;; Rendering
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

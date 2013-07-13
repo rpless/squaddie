@@ -14,7 +14,9 @@
   ;; Get the vector's y component
   [2vector-y (-> 2vector/c real?)]
   ;; Get the distance between two 2vectors
-  [distance (-> 2vector/c 2vector/c real?)]))
+  [distance (-> 2vector/c 2vector/c real?)]
+  ;; normalize the 2vector
+  [normalize (-> 2vector/c 2vector/c)]))
 
 ;; Data
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -34,6 +36,8 @@
 (define (distance c1 c2)
   (sqrt (+ (sqr (- (real-part c2) (real-part c1)))
            (sqr (- (imag-part c2) (imag-part c1))))))
+
+(define (normalize c) (/ c (magnitude c)))
 
 
 ;; Tests

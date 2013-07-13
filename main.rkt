@@ -12,5 +12,3 @@
             (to-draw draw-world)
             (on-tick tick)
             (stop-when game-over? draw-end-game)))
-
-
