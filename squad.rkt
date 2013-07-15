@@ -17,10 +17,15 @@
 (define squad/c
   (recursive-contract
    (class/c
+    ;; Draw the squaddie
+    [draw (->m image? image?)]
     ;; Get the position of this squaddie
     [position (->m 2vector/c)]
     ;; Move this squaddie to the given location.
-    [move (->m 2vector/c (instanceof/c squad/c))])))
+    [move (->dm ([v 2vector/c])
+                #:pre (and (within-width? (2vector-x v))
+                           (within-height? (2vector-y v)))
+                (instanceof/c squad/c))])))
 
 
 ;; A squaddie is a (squaddie Complex)
@@ -46,7 +51,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define squad%
-  (class* object% (drawable<%>)
+  (class object%
     (init pos)
     (define in:pos pos)
     

@@ -4,7 +4,7 @@
 ;; Squaddie
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(provide WIDTH HEIGHT CELL-SIZE drawable<%> in-width/c in-height/c)
+(provide WIDTH HEIGHT CELL-SIZE in-width/c in-height/c within-width? within-height?)
 
 ;; Data
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -12,12 +12,14 @@
 (define HEIGHT 800)
 (define CELL-SIZE 50)
 
-(define drawable<%> 
-  (interface ()
-    [draw (->m image? image?)]))
-
 ;; Contracts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define in-width/c (real-in 0 WIDTH))
 (define in-height/c (real-in 0 HEIGHT))
+
+(define (within-width? x)
+  (<= 0 x WIDTH))
+
+(define (within-height? y)
+  (<= 0 y HEIGHT))
