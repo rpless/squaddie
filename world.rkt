@@ -1,5 +1,5 @@
 #lang racket
-(require 2htdp/image "map.rkt" "squad.rkt" "data.rkt")
+(require 2htdp/image "map.rkt" "squad.rkt" "data.rkt" "utilities/2vector.rkt")
 
 ;; World Module
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -25,12 +25,12 @@
 (define (tick sworld) 
   (cond [(achieve-current-goal? sworld) 
          (world (world-squad sworld) (rest (world-goals sworld)))]
-        [else (world (tick-squaddie (world-squad sworld) (first (world-goals sworld)))
+        [else (world (send (world-squad sworld) handle-goal (first (world-goals sworld)))
                      (world-goals sworld))]))
 
 ;; SquadWorld -> Boolean
 (define (achieve-current-goal? sworld)
-  (let ([spos (squaddie-pos (world-squad sworld))])
+  (let ([spos (send (world-squad sworld) position)])
     (= spos (first (world-goals sworld)))))
 
 
@@ -39,19 +39,15 @@
 
 ;; SquadWorld -> Scene
 (define (draw-world sworld)
-  (foldr draw-goals (draw-squaddie (world-squad sworld) WORLD-SCENE) (world-goals sworld)))
-
-(define (draw-end-game sworld)
-  (place-image (text "Goals Achieved" 36 'black)
-               (/ WIDTH 2)
-               (/ HEIGHT 2)
-               (draw-world sworld)))
+  (foldr draw-goals 
+         (send (world-squad sworld) draw WORLD-SCENE) 
+         (world-goals sworld)))
 
 (define (draw-goals goal scn)
   (place-image (overlay (circle 1 'solid 'red)
                         (triangle 20 'outline 'green))
-               (real-part goal)
-               (imag-part goal)
+               (2vector-x goal)
+               (2vector-y goal)
                scn))
 
 ;; End Game
@@ -60,3 +56,10 @@
 ;; SquadWorld -> Boolean
 (define (game-over? sworld)
   (empty? (world-goals sworld)))
+
+;; SquadWorld -> Image
+(define (draw-end-game sworld)
+  (place-image (text "Goals Achieved" 36 'black)
+               (/ WIDTH 2)
+               (/ HEIGHT 2)
+               (draw-world sworld)))

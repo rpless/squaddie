@@ -1,5 +1,5 @@
 #lang racket
-
+(require (only-in 2htdp/image image?))
 
 ;; Squaddie
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -12,8 +12,9 @@
 (define HEIGHT 800)
 (define CELL-SIZE 50)
 
-;; A Drawable is a 
-(define drawable<%> (interface () draw))
+(define drawable<%> 
+  (interface ()
+    [draw (->m image? image?)]))
 
 ;; Contracts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
