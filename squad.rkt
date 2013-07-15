@@ -6,8 +6,7 @@
 
 (provide
  define-squaddie
- (contract-out 
-  [squad% squad/c])
+ (contract-out [squad% squad/c])
  SPEED)
 
 ;; Data Definition
@@ -39,6 +38,7 @@
 ;; Syntax
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; (define-squaddie <id> ((algorithm <id>) <code> ...)) -> class%
 (define-syntax (define-squaddie stx)
   (syntax-case stx (algorithm)
     [(_ id ((algorithm goal) clauses ...))

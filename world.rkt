@@ -18,6 +18,12 @@
 
 ;; A Location is a Complex
 
+;; Constants
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define GOAL-IMAGE (overlay (circle 1 'solid 'red) (triangle 20 'outline 'green)))
+(define GAME-OVER-TEXT (text "Goals Achieved" 36 'black))
+
 ;; Tick
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -44,11 +50,7 @@
          (world-goals sworld)))
 
 (define (draw-goals goal scn)
-  (place-image (overlay (circle 1 'solid 'red)
-                        (triangle 20 'outline 'green))
-               (2vector-x goal)
-               (2vector-y goal)
-               scn))
+  (place-image GOAL-IMAGE (2vector-x goal) (2vector-y goal) scn))
 
 ;; End Game
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -59,7 +61,4 @@
 
 ;; SquadWorld -> Image
 (define (draw-end-game sworld)
-  (place-image (text "Goals Achieved" 36 'black)
-               (/ WIDTH 2)
-               (/ HEIGHT 2)
-               (draw-world sworld)))
+  (place-image GAME-OVER-TEXT (/ WIDTH 2) (/ HEIGHT 2) (draw-world sworld)))
