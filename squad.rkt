@@ -41,7 +41,7 @@
 ;; Syntax
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-squaddie <id> ((algorithm <id>) <code> ...)) -> class%
+;; (define-squaddie <id> ((<method-name> <id>) <code> ...)) -> class%
 (define-syntax (define-squaddie stx)
   (syntax-case stx ()
     [(_ id ((method goal) clauses ...))
