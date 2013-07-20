@@ -46,10 +46,10 @@
   (syntax-case stx ()
     [(_ id ((method goal) clauses ...))
      #`(define id 
-         ((trait->mixin (trait (define/override (method goal) 
-                                 (let ([res (begin clauses ...)])
-                                   (send this handle-directive res)))))
-          squad%))]))
+         (class squad% (super-new) (inspect #f)
+           (define/override (method goal) 
+             (let ([res (begin clauses ...)])
+               (send this handle-directive res)))))]))
 
 ;; Implementation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -93,20 +93,27 @@
 ;; Tests
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#;(module+ test
+(module+ test
   (require rackunit)
   
   ;; Examples
-  (define squad1 (new squad% [pos 0+0i]))
-  (define squad2 (new squad% [pos 10+10i]))
+  (define-squaddie test-squaddie% ((location-goal coord) (move-toward coord)))
+  (define squad1 (new test-squaddie% [pos 0+0i]))
+  (define squad2 (new test-squaddie% [pos 10+10i]))
   
   ;; Movable Tests
   (check-equal? (send squad1 position) 0+0i)
   (check-equal? (send squad2 position) 10+10i)
   
-  (check-equal? (send squad1 move 3+3i) (make-object squad% 3+3i))
-  (check-equal? (send squad2 move 234+34i) (make-object squad% 234+34i))
+  (check-equal? (send squad1 move 3+3i) (make-object test-squaddie% 3+3i))
+  (check-equal? (send squad2 move 234+34i) (make-object test-squaddie% 234+34i))
   
   ;; Drawable Trait Tests
   (check-equal? (send squad2 draw (empty-scene 20 20))
-                (place-image SQUADDIE-IMAGE 10 10 (empty-scene 20 20))))
+                (place-image SQUADDIE-IMAGE 10 10 (empty-scene 20 20)))
+  
+  ;; Handle-goal Tests
+  (check-equal? (send squad1 handle-goal (location 10+0i))
+                (make-object test-squaddie% 5+0i))
+  (check-equal? (send squad1 handle-goal (location 1+0i))
+                (make-object test-squaddie% 1+0i)))
