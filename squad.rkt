@@ -6,7 +6,10 @@
 
 (provide
  define-squaddie
- (contract-out [squad% squad/c])
+ squad%
+ (contract-out 
+  [squad/c contract?]
+  #;[squad% squad/c])
  SPEED)
 
 ;; Data Definition
@@ -26,10 +29,6 @@
                            (within-height? (2vector-y v)))
                 (instanceof/c squad/c))])))
 
-
-;; A squaddie is a (squaddie Complex)
-(struct squaddie (pos) #:transparent)
-
 ;; Constants
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define SPEED 5)
@@ -45,24 +44,45 @@
      #`(define id 
          ((trait->mixin (trait (define/public (handle-goal goal) clauses ...))) squad%))]))
 
-
-
 ;; Implementation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(define squad<%>
+  (interface () draw position move))
+
 (define squad%
-  (class object%
+  (class* object% (squad<%>)
     (init pos)
     (define in:pos pos)
     
     (define/public (position) in:pos)
     
-    (define/public (move vec) 
-      (new this% [pos vec]))
+    (define/public (move vec) (new this% [pos vec]))
     
     (define/public (draw scn)
       (let ([pos (send this position)])
-      (place-image SQUADDIE-IMAGE (2vector-x pos) (2vector-y pos) scn)))
+        (place-image SQUADDIE-IMAGE (2vector-x pos) (2vector-y pos) scn)))
     
-    (inspect #f)
-    (super-new)))
+    (super-new)
+    (inspect #f)))
+
+;; Tests
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(module+ test
+  (require rackunit)
+  
+  ;; Examples
+  (define squad1 (new squad% [pos 0+0i]))
+  (define squad2 (new squad% [pos 10+10i]))
+  
+  ;; Movable Tests
+  (check-equal? (send squad1 position) 0+0i)
+  (check-equal? (send squad2 position) 10+10i)
+  
+  (check-equal? (send squad1 move 3+3i) (make-object squad% 3+3i))
+  (check-equal? (send squad2 move 234+34i) (make-object squad% 234+34i))
+  
+  ;; Drawable Trait Tests
+  (check-equal? (send squad2 draw (empty-scene 20 20))
+                (place-image SQUADDIE-IMAGE 10 10 (empty-scene 20 20))))

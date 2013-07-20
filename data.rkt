@@ -9,7 +9,7 @@
 ;; Data
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define WIDTH 800)
-(define HEIGHT 800)
+(define HEIGHT 600)
 (define CELL-SIZE 50)
 
 ;; Contracts

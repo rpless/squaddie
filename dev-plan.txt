@@ -5,7 +5,7 @@ The end goal of Squaddie is to make a networked, multiplayer game, in which play
 
 Iteration 1:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-The first iteration will be a single-player, offline version, in which the user has only one squad member with a single capture goal. In order to achieve goals the player will issue directives to each squad member on tick. The only directive in this versino will be the move-toward directive.
+The first iteration will be a single-player, offline version, in which the user has only one squad member with a single capture goal. In order to achieve goals the player will issue directives to each squad member on tick. The only directive in this version will be the move-toward directive.
 
 Iteration 2:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

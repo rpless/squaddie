@@ -3,9 +3,12 @@
          2htdp/image)
 (provide WORLD-SCENE)
 
-;; Squaddie Map Module
+;; Config Module
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; This module contains the map for the game.
+;; This module contains the Configuration for a game of Squaddie.
+;; The configuration is specfied by the game's creator and then closed inside
+;; a function that is given to the player to start a game.
+;; It includes the background image and the starting point.
 
 ;; Integer Integer Scene -> Scene
 (define (draw-cell width height scn)
@@ -22,5 +25,7 @@
 (define grid-y->pixel grid-x->pixel)
 
 (define WORLD-SCENE 
-  (freeze (for*/fold ([scn (empty-scene WIDTH HEIGHT)]) ([w (/ WIDTH CELL-SIZE)][h (/ HEIGHT CELL-SIZE)])
-            (draw-cell w h scn))))
+  (let ([base (rectangle (add1 WIDTH) (add1 HEIGHT) 'solid 'white)])
+    (freeze (for*/fold ([scn base]) ([w (/ WIDTH CELL-SIZE)]
+                                     [h (/ HEIGHT CELL-SIZE)])
+              (draw-cell w h scn)))))
