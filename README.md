@@ -15,7 +15,7 @@ The config file creates the world and the goal. Below is an example that provide
 (provide run-game)
 (define (run-game %) (((create-game WORLD-SCENE) 50+50i (location 200+345i)) %))
 ```
-This config creates a game with a starting point at the (50, 50) with a location based goal of (200, 345).
+This config creates a game with a starting point at (50, 50) with a location based goal of located at (200, 345).
 The function, run-game, is provided for the player to use.
 The WORLD-SCENE is defined elsewhere as a background image and the location structure comes from the goals and directives module.
 
