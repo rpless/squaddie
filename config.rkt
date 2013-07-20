@@ -1,7 +1,8 @@
 #lang racket
 (require (only-in "data.rkt" WIDTH HEIGHT CELL-SIZE)
+         "world.rkt"
+         "goals.rkt"
          2htdp/image)
-(provide WORLD-SCENE)
 
 ;; Config Module
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -9,6 +10,19 @@
 ;; The configuration is specfied by the game's creator and then closed inside
 ;; a function that is given to the player to start a game.
 ;; It includes the background image and the starting point.
+
+(provide run-game)
+
+;; Run the Game.
+(define (run-game %) (((create-game WORLD-SCENE) 50+50i (location 200+345i)) %))
+
+;; Scene -> [2Vector Goal -> [Squad -> Void]]
+;; Create a game with the given background scene, starting position, goal, and squaddie.
+(define (((create-game scene) start goal) %)
+  (big-bang-with-class (make-object world% (make-object % start) goal) scene))
+
+;; Drawing the World
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Integer Integer Scene -> Scene
 (define (draw-cell width height scn)
