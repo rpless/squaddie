@@ -99,9 +99,38 @@
     (define/public (game-over?) #t)
     
     (define/public (draw scn)
-      (place-image GAME-OVER-TEXT 
-                   (/ WIDTH 2) 
-                   (/ HEIGHT 2)
-                   (send squad draw scn)))
+      (place-image GAME-OVER-TEXT (/ WIDTH 2) (/ HEIGHT 2) (send squad draw scn)))
+    
     (super-new)
     (inspect #f)))
+
+;; Tests
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(module+ test 
+  (require rackunit "squad.rkt")
+  
+  ;; Examples
+  (define-squaddie test-squaddie% ((location-goal coord) (move-toward coord)))
+  (define squad1 (new test-squaddie% [pos 0+0i]))
+  (define squad2 (new test-squaddie% [pos 10+0i]))
+  
+  (define goal (location 10+0i))
+  (define w1 (make-object world% squad1 goal))
+  (define w2 (make-object world% squad2 goal))
+  (define end (make-object end-world% squad1))
+  
+  ;; Test draw
+  (check-equal? (send w2 draw (empty-scene 500 500))
+                (place-image GOAL-IMAGE 10 0 (send squad2 draw (empty-scene 500 500))))
+  (check-equal? (send end draw (empty-scene 500 500))
+                (place-image GAME-OVER-TEXT (/ WIDTH 2) (/ HEIGHT 2) (send squad1 draw (empty-scene 500 500))))
+  
+  ;; Test Tick
+  (check-equal? (send end tick) end)
+  (check-equal? (send w1 tick) (make-object world% (send squad1 handle-goal goal) goal))
+  (check-equal? (send w2 tick) (make-object end-world% squad2))
+  
+  ;; Test game-over?
+  (check-true (send end game-over?))
+  (check-false (send w1 game-over?)))
