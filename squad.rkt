@@ -46,7 +46,7 @@
   (syntax-case stx ()
     [(_ id ((method goal) clauses ...))
      #`(define id 
-         ((trait->mixin (trait (define/public (method goal) 
+         ((trait->mixin (trait (define/override (method goal) 
                                  (let ([res (begin clauses ...)])
                                    (send this handle-directive res)))))
           squad%))]))
@@ -61,6 +61,8 @@
   (class* object% (squad<%>)
     (init pos)
     (define in:pos pos)
+    
+    (abstract location-goal)
     
     (define/public (position) in:pos)
     
@@ -91,7 +93,7 @@
 ;; Tests
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(module+ test
+#;(module+ test
   (require rackunit)
   
   ;; Examples
