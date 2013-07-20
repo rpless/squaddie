@@ -37,7 +37,9 @@
   (sqrt (+ (sqr (- (real-part c2) (real-part c1)))
            (sqr (- (imag-part c2) (imag-part c1))))))
 
-(define (normalize c) (/ c (magnitude c)))
+(define (normalize c) 
+  (let ([mag (magnitude c)])
+    (if (zero? mag) c (/ c mag))))
 
 
 ;; Tests
@@ -48,4 +50,9 @@
   ;; Distance Tests
   (check-equal? (distance 0+0i 1+0i) 1)
   (check-equal? (distance 0+0i 0+1i) 1)
-  (check-equal? (distance 3+0i 0+4i) 5))
+  (check-equal? (distance 3+0i 0+4i) 5)
+  
+  ;; Normalize Tests
+  (check-equal? (magnitude (normalize 304+2435i)) 1.0)
+  (check-equal? (magnitude (normalize 84367+23497i)) 1.0)
+  (check-equal? (normalize 0+0i) 0))
