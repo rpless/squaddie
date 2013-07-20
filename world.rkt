@@ -1,5 +1,9 @@
 #lang racket
-(require 2htdp/image "data.rkt" "utilities/2vector.rkt" unstable/options)
+(require 2htdp/image
+         2htdp/universe
+         (only-in "data.rkt"  WIDTH HEIGHT)
+         "utilities/2vector.rkt"
+         "goals.rkt")
 
 ;; World Module
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -11,6 +15,7 @@
 
 (provide 
  world%
+ big-bang-with-class
  (contract-out 
   [world/c contract?]
   #;[world% world/c]))
@@ -38,6 +43,15 @@
 (define GOAL-IMAGE (overlay (circle 1 'solid 'red) (triangle 20 'outline 'green)))
 (define GAME-OVER-TEXT (text "Goals Achieved" 36 'black))
 
+;; Syntactic Sugar
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define (big-bang-with-class obj base-scene)
+  (big-bang obj
+            [to-draw   (λ (o) (send o draw base-scene))]
+            [on-tick   (λ (o) (send o tick))]
+            [stop-when (λ (o) (send o game-over?)) (λ (o) (send o draw base-scene))]))
+
 ;; Implementation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -60,7 +74,7 @@
     ;; has the squaddie reached its goal
     (define/private (goal-achieved?)
       (let ([spos (send squad position)])
-        (= spos goal)))
+        (= spos (location-position goal))))
     
     (define/public (game-over?) #f)
     
@@ -70,7 +84,8 @@
     ;; Scene -> Scene
     ;; Draw the goal on the screen
     (define/private (draw-goal scn)
-      (place-image GOAL-IMAGE (2vector-x goal) (2vector-y goal) scn))
+      (let ([g (location-position goal)])
+        (place-image GOAL-IMAGE (2vector-x g) (2vector-y g) scn)))
     
     (super-new)
     (inspect #f)))

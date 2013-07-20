@@ -1,7 +1,6 @@
 Squaddie Dev Plan
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-The end goal of Squaddie is to make a networked, multiplayer game, in which players use a AI's that they have written to achieve a set of goals that the server provides them with. In addition, each squad member will have a setof microgoals that it must achieve in order to complete the player's goals.
-
+The end goal of Squaddie is to make a networked, multiplayer game, in which players use a AI's that they have written to achieve a set of goals that the server provides them with. In addition, each squad member will have a set of microgoals that it must achieve in order to complete the player's goals.
 
 Iteration 1:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

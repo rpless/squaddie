@@ -1,5 +1,9 @@
 #lang racket
-(require racket/trait 2htdp/image "data.rkt" "utilities/2vector.rkt")
+(require racket/trait
+         2htdp/image
+         (only-in "data.rkt" within-width? within-height?)
+         "utilities/2vector.rkt"
+         "goals.rkt")
 
 ;; Squaddie
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -39,10 +43,13 @@
 
 ;; (define-squaddie <id> ((algorithm <id>) <code> ...)) -> class%
 (define-syntax (define-squaddie stx)
-  (syntax-case stx (algorithm)
-    [(_ id ((algorithm goal) clauses ...))
+  (syntax-case stx ()
+    [(_ id ((method goal) clauses ...))
      #`(define id 
-         ((trait->mixin (trait (define/public (handle-goal goal) clauses ...))) squad%))]))
+         ((trait->mixin (trait (define/public (method goal) 
+                                 (let ([res (begin clauses ...)])
+                                   (send this handle-directive res)))))
+          squad%))]))
 
 ;; Implementation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -58,6 +65,21 @@
     (define/public (position) in:pos)
     
     (define/public (move vec) (new this% [pos vec]))
+    
+    (define/public (handle-goal goal)
+      (match goal
+        [(location pos) (send this location-goal pos)]))
+    
+    (define/public (handle-directive directive)
+      (match directive
+        [(move-toward pos) (make-object this% (handle-move-directive pos))]))
+    
+    ;; 2Vector -> 2Vector
+    (define/private (handle-move-directive goal)
+      (let ([pos (send this position)])
+        (if (<= (distance pos goal) SPEED)
+            goal
+            (+ pos (* SPEED (normalize (- goal pos)))))))
     
     (define/public (draw scn)
       (let ([pos (send this position)])

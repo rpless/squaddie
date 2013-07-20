@@ -1,30 +1,26 @@
 #lang racket
-(require 2htdp/universe "world.rkt" "squad.rkt" "utilities/2vector.rkt" "config.rkt")
+(require 2htdp/universe 
+         "world.rkt" 
+         "squad.rkt" 
+         "utilities/2vector.rkt" 
+         "config.rkt" 
+         "goals.rkt")
 
 ;; Squaddie
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Syntactic Sugar
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(define (big-bang-with-class obj)
-    (big-bang obj
-              [to-draw (λ (o) (send o draw WORLD-SCENE))]
-              [on-tick (λ (o) (send o tick))]
-              [stop-when (λ (o) (send o game-over?)) (λ (o) (send o draw WORLD-SCENE))]))
-
-;; REFACTOR
-;; -  Create a curried function that first takes a config and then a world
-;;    The game will be run by passing a squad(s) into this function
-
+;; An Example Squaddie
 (define-squaddie my-squaddie% 
-  ((algorithm goal) 
+  ((location-goal goal) 
    (let ([pos (send this position)])
-     (make-object this% 
-       (if (<= (distance pos goal) SPEED)
-           goal
-           (+ pos (* SPEED (normalize (- goal pos)))))))))
+     (if (not (zero? (- (2vector-x pos) (2vector-x goal))))
+         (move-toward (make-rectangular (2vector-x goal) (2vector-y pos)))
+         (move-toward goal)))))
 
+;; Scene -> [2Vector Goal -> [Squad -> Void]]
+;; Create a game with the given background scene, starting position, goal, and squaddie.
+(define (((create-game scene) start goal) %)
+  (big-bang-with-class (make-object world% (make-object % start) goal) scene))
 
-(define (run)
-  (big-bang-with-class (make-object world% (make-object my-squaddie% 50+50i) 200+345i)))
+;; Run the Game.
+(((create-game WORLD-SCENE) 50+50i (location 200+345i)) my-squaddie%)
