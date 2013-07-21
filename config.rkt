@@ -14,12 +14,13 @@
 (provide run-game)
 
 ;; Run the Game.
-(define (run-game %) (((create-game WORLD-SCENE) 50+50i (location 200+345i)) %))
+(define goals (list (location 200+345i) (location 10+500i)))
+(define (run-game %) (((create-game WORLD-SCENE) 50+50i goals) %))
 
-;; Scene -> [2Vector Goal -> [Squad -> Void]]
+;; Scene -> [2Vector [Listof Goal] -> [Squad -> Void]]
 ;; Create a game with the given background scene, starting position, goal, and squaddie.
-(define (((create-game scene) start goal) %)
-  (big-bang-with-class (make-object world% (make-object % start) goal) scene))
+(define (((create-game scene) start goals) %)
+  (big-bang-with-class (make-object world% (make-object % start) goals) scene))
 
 ;; Drawing the World
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

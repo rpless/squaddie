@@ -9,10 +9,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; The world module provides a representation of the world.
 
-;; REFACTOR:
-;; -  Make a config object that has the map and specifies a starting location
-;; -  make the world an abstract that can tick the squads. mixin drawing behavior
-
 (provide 
  world%
  big-bang-with-class
@@ -55,35 +51,38 @@
 ;; Implementation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; A SquadWorld is a (new world% [squad Squaddie] [goal Goal])
+;; A SquadWorld is a (new world% [squad Squaddie] [goal [Listof Goal]])
 (define world%
   (class object%
-    (init-field squad goal)
+    (init-field squad goals)
     
     (define/public-final (tick)
-      (if (goal-achieved?)
-          (make-object end-world% squad)
-          (update)))
+      (cond [(empty? goals) (make-object end-world% squad)]
+            [(goal-achieved?) (make-object this% squad (rest goals))]
+            [else (update)]))
     
     ;; -> SquadWorld
     ;; update the squad
     (define/private (update) 
-      (make-object this% (send squad handle-goal goal) goal))
+      (make-object this% (send squad handle-goal (first goals)) goals))
     
     ;; -> Boolean
     ;; has the squaddie reached its goal
     (define/private (goal-achieved?)
       (let ([spos (send squad position)])
-        (= spos (location-position goal))))
+        (= spos (location-position (first goals)))))
     
     (define/public-final (game-over?) #f)
     
     (define/public (draw scn)
-      (draw-goal (send squad draw scn)))
+      (draw-goals (send squad draw scn)))
     
-    ;; Scene -> Scene
+    (define/private (draw-goals scn)
+      (foldr (λ (g s) (draw-goal g s)) scn goals))
+    
+    ;; Goal Scene -> Scene
     ;; Draw the goal on the screen
-    (define/private (draw-goal scn)
+    (define/private (draw-goal goal scn)
       (let ([g (location-position goal)])
         (place-image GOAL-IMAGE (2vector-x g) (2vector-y g) scn)))
     
@@ -116,8 +115,8 @@
   (define squad2 (new test-squaddie% [pos 10+0i]))
   
   (define goal (location 10+0i))
-  (define w1 (make-object world% squad1 goal))
-  (define w2 (make-object world% squad2 goal))
+  (define w1 (make-object world% squad1 (list goal)))
+  (define w2 (make-object world% squad2 (list goal)))
   (define end (make-object end-world% squad1))
   
   ;; Test draw
@@ -128,8 +127,9 @@
   
   ;; Test Tick
   (check-equal? (send end tick) end)
-  (check-equal? (send w1 tick) (make-object world% (send squad1 handle-goal goal) goal))
-  (check-equal? (send w2 tick) (make-object end-world% squad2))
+  (check-equal? (send w1 tick) (make-object world% (send squad1 handle-goal goal) (list goal)))
+  (check-equal? (send w2 tick) (make-object world% squad2 '()))
+  (check-equal? (send (make-object world% squad1 '()) tick) (make-object end-world% squad1))
   
   ;; Test game-over?
   (check-true (send end game-over?))
