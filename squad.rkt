@@ -64,17 +64,21 @@
     
     (abstract location-goal)
     
-    (define/public (position) in:pos)
+    (define/public-final (position) in:pos)
     
-    (define/public (move vec) (new this% [pos vec]))
+    (define/public-final (move vec) (new this% [pos vec]))
     
-    (define/public (handle-goal goal)
+    (define/public-final (handle-goal goal)
       (match goal
         [(location pos) (send this location-goal pos)]))
     
-    (define/public (handle-directive directive)
+    (define/public-final (handle-directive directive)
       (match directive
         [(move-toward pos) (make-object this% (handle-move-directive pos))]))
+        
+    (define/public (draw scn)
+      (let ([pos (send this position)])
+        (place-image SQUADDIE-IMAGE (2vector-x pos) (2vector-y pos) scn)))
     
     ;; 2Vector -> 2Vector
     (define/private (handle-move-directive goal)
@@ -82,10 +86,6 @@
         (if (<= (distance pos goal) SPEED)
             goal
             (+ pos (* SPEED (normalize (- goal pos)))))))
-    
-    (define/public (draw scn)
-      (let ([pos (send this position)])
-        (place-image SQUADDIE-IMAGE (2vector-x pos) (2vector-y pos) scn)))
     
     (super-new)
     (inspect #f)))

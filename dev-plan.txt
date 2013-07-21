@@ -28,7 +28,7 @@ This version will introduce enemies. Squad members will now have health. Kill go
 
 Iteration 7:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-This version introduces a vary bare bones to play against. A Player will now have a base (which will be the enemy's final capture goal). Squad members will spawn after a certain amount of time.
+This version introduces a vary bare bones AI to play against. A Player will now have a base (which will be the enemy's final capture goal). Squad members will spawn after a certain amount of time.
 
 Iteration 9:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
