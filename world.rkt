@@ -60,7 +60,7 @@
   (class object%
     (init-field squad goal)
     
-    (define/public (tick)
+    (define/public-final (tick)
       (if (goal-achieved?)
           (make-object end-world% squad)
           (update)))
@@ -76,7 +76,7 @@
       (let ([spos (send squad position)])
         (= spos (location-position goal))))
     
-    (define/public (game-over?) #f)
+    (define/public-final (game-over?) #f)
     
     (define/public (draw scn)
       (draw-goal (send squad draw scn)))
@@ -94,9 +94,9 @@
 (define end-world%
   (class object%
     (init-field squad)
-    (define/public (tick) this)
+    (define/public-final (tick) this)
     
-    (define/public (game-over?) #t)
+    (define/public-final (game-over?) #t)
     
     (define/public (draw scn)
       (place-image GAME-OVER-TEXT (/ WIDTH 2) (/ HEIGHT 2) (send squad draw scn)))
