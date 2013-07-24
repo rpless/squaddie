@@ -30,6 +30,6 @@ Iteration 7:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 This version introduces a vary bare bones AI to play against. A Player will now have a base (which will be the enemy's final capture goal). Squad members will spawn after a certain amount of time.
 
-Iteration 9:
+Iteration 8:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 This version will introduce the networked component of the game. The game will be migrated to use universe.

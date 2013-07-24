@@ -50,7 +50,7 @@
          (class squad% (super-new) (inspect #f)
            (define/override (method goal) 
              (let ([res (begin clauses ...)])
-               (send this handle-directive res)))))]))
+               (send this execute-directive res)))))]))
 
 ;; Implementation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -69,20 +69,13 @@
       (match goal
         [(location pos) (send this location-goal pos)]))
     
-    (define/public-final (handle-directive directive)
+    (define/public-final (execute-directive directive)
       (match directive
-        [(move-toward pos) (make-object this% (handle-move-directive pos))]))
+        [(move-toward pos) (make-object this% (handle-directive directive this))]))
         
     (define/public (draw scn)
       (let ([pos (send this position)])
         (place-image SQUADDIE-IMAGE (2vector-x pos) (2vector-y pos) scn)))
-    
-    ;; 2Vector -> 2Vector
-    (define/private (handle-move-directive goal)
-      (let ([pos (send this position)])
-        (if (<= (distance pos goal) SPEED)
-            goal
-            (+ pos (* SPEED (normalize (- goal pos)))))))
     
     (super-new)
     (inspect #f)))
