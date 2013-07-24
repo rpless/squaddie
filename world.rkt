@@ -58,19 +58,13 @@
     
     (define/public-final (tick)
       (cond [(empty? goals) (make-object end-world% squad)]
-            [(goal-achieved?) (make-object this% squad (rest goals))]
+            [(goal-achieved? (first goals) squad) (make-object this% squad (rest goals))]
             [else (update)]))
     
     ;; -> SquadWorld
     ;; update the squad
     (define/private (update) 
       (make-object this% (send squad handle-goal (first goals)) goals))
-    
-    ;; -> Boolean
-    ;; has the squaddie reached its goal
-    (define/private (goal-achieved?)
-      (let ([spos (send squad position)])
-        (= spos (location-position (first goals)))))
     
     (define/public-final (game-over?) #f)
     
@@ -103,34 +97,60 @@
     (super-new)
     (inspect #f)))
 
+;; Update Goals
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define (goal-achieved? goal squad)
+  (match goal
+    [(location pos) (achieved-location-goal? goal squad)]))
+
+(define (achieved-location-goal? lgoal squad)
+  (= (send squad position) (location-position lgoal)))
+
+
 ;; Tests
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(module+ test
+  (require rackunit "squad.rkt" "goals.rkt")
+  (define-squaddie test-squaddie% ((location-goal coord) (move-toward coord))))
+
+;; World Tests
 (module+ test 
-  (require rackunit "squad.rkt")
-  
-  ;; Examples
-  (define-squaddie test-squaddie% ((location-goal coord) (move-toward coord)))
-  (define squad1 (new test-squaddie% [pos 0+0i]))
-  (define squad2 (new test-squaddie% [pos 10+0i]))
-  
-  (define goal (location 10+0i))
-  (define w1 (make-object world% squad1 (list goal)))
-  (define w2 (make-object world% squad2 (list goal)))
-  (define end (make-object end-world% squad1))
-  
-  ;; Test draw
-  (check-equal? (send w2 draw (empty-scene 500 500))
-                (place-image GOAL-IMAGE 10 0 (send squad2 draw (empty-scene 500 500))))
-  (check-equal? (send end draw (empty-scene 500 500))
-                (place-image GAME-OVER-TEXT (/ WIDTH 2) (/ HEIGHT 2) (send squad1 draw (empty-scene 500 500))))
-  
-  ;; Test Tick
-  (check-equal? (send end tick) end)
-  (check-equal? (send w1 tick) (make-object world% (send squad1 handle-goal goal) (list goal)))
-  (check-equal? (send w2 tick) (make-object world% squad2 '()))
-  (check-equal? (send (make-object world% squad1 '()) tick) (make-object end-world% squad1))
-  
-  ;; Test game-over?
-  (check-true (send end game-over?))
-  (check-false (send w1 game-over?)))
+  (let ()
+    ;; Examples
+    (define squad1 (new test-squaddie% [pos 0+0i]))
+    (define squad2 (new test-squaddie% [pos 10+0i]))
+    
+    (define goal (location 10+0i))
+    (define w1 (make-object world% squad1 (list goal)))
+    (define w2 (make-object world% squad2 (list goal)))
+    (define end (make-object end-world% squad1))
+    
+    ;; Test draw
+    (check-equal? (send w2 draw (empty-scene 500 500))
+                  (place-image GOAL-IMAGE 10 0 (send squad2 draw (empty-scene 500 500))))
+    (check-equal? (send end draw (empty-scene 500 500))
+                  (place-image GAME-OVER-TEXT (/ WIDTH 2) (/ HEIGHT 2) (send squad1 draw (empty-scene 500 500))))
+    
+    ;; Test Tick
+    (check-equal? (send end tick) end)
+    (check-equal? (send w1 tick) (make-object world% (send squad1 handle-goal goal) (list goal)))
+    (check-equal? (send w2 tick) (make-object world% squad2 '()))
+    (check-equal? (send (make-object world% squad1 '()) tick) (make-object end-world% squad1))
+    
+    ;; Test game-over?
+    (check-true (send end game-over?))
+    (check-false (send w1 game-over?))))
+
+
+;; Goal Tests
+(module+ test 
+  (let ()
+    ;; Examples
+    (define lgoal (location 0+0i))
+    (define s1 (make-object test-squaddie% 10+0i))
+    (define s2 (make-object test-squaddie% 0+0i))
+    
+    (check-true (goal-achieved? lgoal s2))
+    (check-false (goal-achieved? lgoal s1))))

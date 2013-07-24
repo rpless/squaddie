@@ -13,7 +13,7 @@
 ;; A Goal is oneof:
 ;; Location
 
-;; A Location is (location 2Vector)
+;; A Location is (location 2Vector Number)
 (struct location (position) #:transparent)
 
 ;; A Directive is one of:
