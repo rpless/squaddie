@@ -4,9 +4,21 @@
 ;; Squaddie
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(provide WIDTH HEIGHT CELL-SIZE in-width/c in-height/c within-width? within-height?)
+(provide WIDTH HEIGHT CELL-SIZE
+         in-width/c in-height/c
+         within-width? within-height?
+         positionable<%>)
 
 ;; Data
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; A Positionable is an object that has a position
+(define positionable<%> 
+  (interface ()
+    ;; -> 2Vector
+    position))
+
+;; Constants
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define WIDTH 800)
 (define HEIGHT 600)

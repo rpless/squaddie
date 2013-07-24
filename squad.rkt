@@ -1,7 +1,7 @@
 #lang racket
 (require racket/trait
          2htdp/image
-         (only-in "data.rkt" within-width? within-height?)
+         (only-in "data.rkt" within-width? within-height? positionable<%>)
          "utilities/2vector.rkt"
          "goals.rkt")
 
@@ -53,12 +53,8 @@
 
 ;; Implementation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(define squad<%>
-  (interface () draw position move))
-
 (define squad%
-  (class* object% (squad<%>)
+  (class* object% (positionable<%>)
     (init pos)
     (define in:pos pos)
     

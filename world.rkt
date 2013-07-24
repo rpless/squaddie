@@ -97,17 +97,6 @@
     (super-new)
     (inspect #f)))
 
-;; Update Goals
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(define (goal-achieved? goal squad)
-  (match goal
-    [(location pos) (achieved-location-goal? goal squad)]))
-
-(define (achieved-location-goal? lgoal squad)
-  (= (send squad position) (location-position lgoal)))
-
-
 ;; Tests
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -142,15 +131,3 @@
     ;; Test game-over?
     (check-true (send end game-over?))
     (check-false (send w1 game-over?))))
-
-
-;; Goal Tests
-(module+ test 
-  (let ()
-    ;; Examples
-    (define lgoal (location 0+0i))
-    (define s1 (make-object test-squaddie% 10+0i))
-    (define s2 (make-object test-squaddie% 0+0i))
-    
-    (check-true (goal-achieved? lgoal s2))
-    (check-false (goal-achieved? lgoal s1))))
