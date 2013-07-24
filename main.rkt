@@ -1,8 +1,7 @@
 #lang racket
 (require "config.rkt"
          "squad.rkt" 
-         "utilities/2vector.rkt" 
-         "goals.rkt"
+         "utilities/2vector.rkt"
          "directives.rkt")
 
 ;; Squaddie

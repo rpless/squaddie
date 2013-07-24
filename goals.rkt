@@ -3,7 +3,8 @@
 ;; Goals Module
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(provide (struct-out location)
+(provide goal-position
+         (struct-out location)
          goal-achieved?)
 
 ;; Data
@@ -12,8 +13,10 @@
 ;; A Goal is oneof:
 ;; Location
 
-;; A Location is (location 2Vector Number)
-(struct location (position) #:transparent)
+(struct goal (position) #:transparent)
+
+;; A Location is (location 2Vector)
+(struct location goal () #:transparent)
 
 ;; Update Goals
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -27,7 +30,7 @@
 ;; Location Positionable -> Boolean
 ;; Has the given Positionable reached the goal?
 (define (achieved-location-goal? lgoal positionable)
-  (= (send positionable position) (location-position lgoal)))
+  (= (send positionable position) (goal-position lgoal)))
 
 ;; Tests
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

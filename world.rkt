@@ -77,7 +77,7 @@
     ;; Goal Scene -> Scene
     ;; Draw the goal on the screen
     (define/private (draw-goal goal scn)
-      (let ([g (location-position goal)])
+      (let ([g (goal-position goal)])
         (place-image GOAL-IMAGE (2vector-x g) (2vector-y g) scn)))
     
     (super-new)
