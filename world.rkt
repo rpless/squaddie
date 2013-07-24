@@ -101,7 +101,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (module+ test
-  (require rackunit "squad.rkt" "goals.rkt")
+  (require rackunit "squad.rkt" "goals.rkt" "directives.rkt")
   (define-squaddie test-squaddie% ((location-goal coord) (move-toward coord))))
 
 ;; World Tests

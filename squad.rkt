@@ -3,7 +3,8 @@
          2htdp/image
          (only-in "data.rkt" within-width? within-height? positionable<%>)
          "utilities/2vector.rkt"
-         "goals.rkt")
+         "goals.rkt"
+         "directives.rkt")
 
 ;; Squaddie
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

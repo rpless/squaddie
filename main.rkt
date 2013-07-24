@@ -2,7 +2,8 @@
 (require "config.rkt"
          "squad.rkt" 
          "utilities/2vector.rkt" 
-         "goals.rkt")
+         "goals.rkt"
+         "directives.rkt")
 
 ;; Squaddie
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
