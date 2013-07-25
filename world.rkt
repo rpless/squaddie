@@ -19,9 +19,6 @@
 ;; Data
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; A SquadWorld is a (world squad [Listof Goal])
-(struct world (squad goals) #:transparent)
-
 (define world/c
   (recursive-contract
    (class/c
@@ -36,7 +33,6 @@
 ;; Constants
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(define GOAL-IMAGE (overlay (circle 1 'solid 'red) (triangle 20 'outline 'green)))
 (define GAME-OVER-TEXT (text "Goals Achieved" 36 'black))
 
 ;; Syntactic Sugar
@@ -72,13 +68,7 @@
       (draw-goals (send squad draw scn)))
     
     (define/private (draw-goals scn)
-      (foldr (λ (g s) (draw-goal g s)) scn goals))
-    
-    ;; Goal Scene -> Scene
-    ;; Draw the goal on the screen
-    (define/private (draw-goal goal scn)
-      (let ([g (goal-position goal)])
-        (place-image GOAL-IMAGE (2vector-x g) (2vector-y g) scn)))
+      (foldr draw-goal scn goals))
     
     (super-new)
     (inspect #f)))
@@ -107,6 +97,7 @@
 ;; World Tests
 (module+ test 
   (let ()
+    (define GOAL-IMAGE (overlay (circle 1 'solid 'red) (triangle 20 'outline 'green)))
     ;; Examples
     (define squad1 (new test-squaddie% [pos 0+0i]))
     (define squad2 (new test-squaddie% [pos 10+0i]))
@@ -118,9 +109,9 @@
     
     ;; Test draw
     (check-equal? (send w2 draw (empty-scene 500 500))
-                  (place-image GOAL-IMAGE 10 0 (send squad2 draw (empty-scene 500 500))))
+                  (draw-goal goal (send squad2 draw (empty-scene 500 500))))
     (check-equal? (send end draw (empty-scene 500 500))
-                  (place-image GAME-OVER-TEXT (/ WIDTH 2) (/ HEIGHT 2) (send squad1 draw (empty-scene 500 500))))
+                  (draw-goal goal (send squad1 draw (empty-scene 500 500))))
     
     ;; Test Tick
     (check-equal? (send end tick) end)

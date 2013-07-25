@@ -1,11 +1,13 @@
 #lang racket
+(require 2htdp/image "utilities/2vector.rkt")
 
 ;; Goals Module
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (provide goal-position
          (struct-out location)
-         goal-achieved?)
+         goal-achieved?
+         draw-goal)
 
 ;; Data
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -17,6 +19,11 @@
 
 ;; A Location is (location 2Vector)
 (struct location goal () #:transparent)
+
+;; Constants
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define GOAL-IMAGE (overlay (circle 1 'solid 'red) (triangle 20 'outline 'green)))
 
 ;; Update Goals
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -31,6 +38,13 @@
 ;; Has the given Positionable reached the goal?
 (define (achieved-location-goal? lgoal positionable)
   (= (send positionable position) (goal-position lgoal)))
+
+;; Rendering
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(define (draw-goal goal scn)
+  (let ([g (goal-position goal)])
+    (place-image GOAL-IMAGE (2vector-x g) (2vector-y g) scn)))
 
 ;; Tests
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -48,4 +62,8 @@
     (define s2 (make-object test-positionable% 0+0i))
     
     (check-true (goal-achieved? lgoal s2))
-    (check-false (goal-achieved? lgoal s1))))
+    (check-false (goal-achieved? lgoal s1)))
+  
+  (let ()
+    (check-equal? (draw-goal (location 9+9i) (empty-scene 20 20))
+                  (place-image GOAL-IMAGE 9 9 (empty-scene 20 20)))))
