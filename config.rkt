@@ -14,7 +14,7 @@
 (provide run-game)
 
 ;; Run the Game.
-(define goals (list (location 200+345i) (location 10+500i)))
+(define goals (list (location 200+345i 1) (location 10+500i 10)))
 (define (run-game %) (((create-game WORLD-SCENE) 50+50i goals) %))
 
 ;; Scene -> [2Vector [Listof Goal] -> [Squad -> Void]]

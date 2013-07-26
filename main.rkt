@@ -9,11 +9,10 @@
 
 ;; An Example Squaddie
 (define-squaddie my-squaddie% 
-  ((location-goal goal) 
+  ((location-goal loc count) 
    (let ([pos (send this position)])
-     (if (not (zero? (- (2vector-x pos) (2vector-x goal))))
-         (move-toward (make-rectangular (2vector-x goal) (2vector-y pos)))
-         (move-toward goal)))))
+     (cond [(= pos loc) (hold-position)]
+           [else (move-toward loc)]))))
 
 (define (run)
   (run-game my-squaddie%))

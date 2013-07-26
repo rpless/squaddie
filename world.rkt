@@ -54,13 +54,14 @@
     
     (define/public-final (tick)
       (cond [(empty? goals) (make-object end-world% squad)]
-            [(goal-achieved? (first goals) squad) (make-object this% squad (rest goals))]
+            [(goal-achieved? (first goals)) (make-object this% squad (rest goals))]
             [else (update)]))
     
     ;; -> SquadWorld
     ;; update the squad
-    (define/private (update) 
-      (make-object this% (send squad handle-goal (first goals)) goals))
+    (define/private (update)
+      (let ([cur (first goals)])
+        (make-object this% (send squad handle-goal cur) (cons (update-goal cur squad) (rest goals)))))
     
     (define/public-final (game-over?) #f)
     
@@ -92,7 +93,7 @@
 
 (module+ test
   (require rackunit "squad.rkt" "goals.rkt" "directives.rkt")
-  (define-squaddie test-squaddie% ((location-goal coord) (move-toward coord))))
+  (define-squaddie test-squaddie% ((location-goal coord count) (move-toward coord))))
 
 ;; World Tests
 (module+ test 
@@ -102,16 +103,16 @@
     (define squad1 (new test-squaddie% [pos 0+0i]))
     (define squad2 (new test-squaddie% [pos 10+0i]))
     
-    (define goal (location 10+0i))
+    (define goal (location 10+0i 1))
     (define w1 (make-object world% squad1 (list goal)))
-    (define w2 (make-object world% squad2 (list goal)))
+    (define w2 (make-object world% squad2 (list (location 10+0i 0))))
     (define end (make-object end-world% squad1))
     
     ;; Test draw
     (check-equal? (send w2 draw (empty-scene 500 500))
                   (draw-goal goal (send squad2 draw (empty-scene 500 500))))
     (check-equal? (send end draw (empty-scene 500 500))
-                  (draw-goal goal (send squad1 draw (empty-scene 500 500))))
+                  (place-image GAME-OVER-TEXT (/ WIDTH 2) (/ HEIGHT 2) (send squad1 draw (empty-scene 500 500))))
     
     ;; Test Tick
     (check-equal? (send end tick) end)

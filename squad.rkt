@@ -45,10 +45,10 @@
 ;; (define-squaddie <id> ((<method-name> <id>) <code> ...)) -> class%
 (define-syntax (define-squaddie stx)
   (syntax-case stx ()
-    [(_ id ((method goal) clauses ...))
+    [(_ id ((method args ...) clauses ...))
      #`(define id 
          (class squad% (super-new) (inspect #f)
-           (define/override (method goal) 
+           (define/override (method args ...) 
              (let ([res (begin clauses ...)])
                (send this execute-directive res)))))]))
 
@@ -67,11 +67,12 @@
     
     (define/public-final (handle-goal goal)
       (match goal
-        [(location pos) (send this location-goal pos)]))
+        [(location pos counter) (send this location-goal pos counter)]))
     
     (define/public-final (execute-directive directive)
       (match directive
-        [(move-toward pos) (make-object this% (handle-directive directive this))]))
+        [(move-toward pos) (make-object this% (handle-directive directive this))]
+        [(hold-position) (make-object this% (send this position))]))
         
     (define/public (draw scn)
       (let ([pos (send this position)])
@@ -87,7 +88,10 @@
   (require rackunit)
   
   ;; Examples
-  (define-squaddie test-squaddie% ((location-goal coord) (move-toward coord)))
+  (define-squaddie test-squaddie% ((location-goal coord counter)
+                                   (if (= coord (send this position))
+                                       (hold-position)
+                                       (move-toward coord))))
   (define squad1 (new test-squaddie% [pos 0+0i]))
   (define squad2 (new test-squaddie% [pos 10+10i]))
   
@@ -103,7 +107,9 @@
                 (place-image SQUADDIE-IMAGE 10 10 (empty-scene 20 20)))
   
   ;; Handle-goal Tests
-  (check-equal? (send squad1 handle-goal (location 10+0i))
+  (check-equal? (send squad1 handle-goal (location 10+0i 1))
                 (make-object test-squaddie% 5+0i))
-  (check-equal? (send squad1 handle-goal (location 1+0i))
-                (make-object test-squaddie% 1+0i)))
+  (check-equal? (send squad1 handle-goal (location 1+0i 1))
+                (make-object test-squaddie% 1+0i))
+  
+  (check-equal? (send squad1 handle-goal (location 0+0i 1)) squad1))
