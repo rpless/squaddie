@@ -37,23 +37,24 @@
 ;; Constants
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define SPEED 5)
-(define SQUADDIE-IMAGE (circle 5 'solid 'blue))
+(define SIZE 5)
+(define SQUADDIE-IMAGE (circle SIZE 'solid 'blue))
 
 ;; Syntax
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (define-squaddie <id> ((<method-name> <id>) <code> ...)) -> class%
+;; (define-squaddie <id> ((<method-name> <arg> ...) <code> ...)) -> class%
 (define-syntax (define-squaddie stx)
   (syntax-case stx ()
     [(_ id ((method args ...) clauses ...))
      #`(define id 
          (class squad% (super-new) (inspect #f)
            (define/override (method args ...) 
-             (let ([res (begin clauses ...)])
-               (send this execute-directive res)))))]))
+             (begin clauses ...))))]))
 
 ;; Implementation
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (define squad%
   (class* object% (positionable<%>)
     (init pos)
@@ -66,8 +67,9 @@
     (define/public-final (move vec) (new this% [pos vec]))
     
     (define/public-final (handle-goal goal)
-      (match goal
-        [(location pos counter) (send this location-goal pos counter)]))
+      (send this execute-directive 
+            (match goal
+              [(location pos counter) (send this location-goal pos counter)])))
     
     (define/public-final (execute-directive directive)
       (match directive

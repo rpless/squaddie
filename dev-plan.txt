@@ -10,25 +10,25 @@ Iteration 2:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 This version will introduce multiple goals. Capture goals will be extended to have a certain number of ticks associated with them. The hold position directive will be introduced.
 
-Iteration 3:
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-This version will introduce a new type of goal, the destroy goal. Squad members will now have the ability to attack and destroy various objects. The attack directive will be introduced.
-
-Iteration 4: 
+Iteration 3: 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 This version will introduce multiple squad members and rudimentary collision between world entities.
 
-Iteration 5:
+Iteration 4:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-This version will introduce squad member specific microgoals.
+This version will introduce a new type of goal, the destroy goal. Squad members will now have the ability to attack and destroy various objects. The attack directive will be introduced.
 
-Iteration 6:
+Iteration 5:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 This version will introduce enemies. Squad members will now have health. Kill goals will be introduced.
 
+Iteration 6:
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+This version will introduce squad member specific microgoals.
+
 Iteration 7:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-This version introduces a vary bare bones AI to play against. A Player will now have a base (which will be the enemy's final capture goal). Squad members will spawn after a certain amount of time.
+This version introduces a bare bones AI to play against. A Player will now have a base (which will be the enemy's final capture goal). Squad members will spawn after a certain amount of time.
 
 Iteration 8:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
