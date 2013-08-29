@@ -1,6 +1,5 @@
 #lang racket
-(require racket/trait
-         2htdp/image
+(require 2htdp/image
          (only-in "data.rkt" within-width? within-height? positionable<%>)
          "utilities/2vector.rkt"
          "goals.rkt"
@@ -32,7 +31,9 @@
     [move (->dm ([v 2vector/c])
                 #:pre (and (within-width? (2vector-x v))
                            (within-height? (2vector-y v)))
-                (instanceof/c squad/c))])))
+                (instanceof/c squad/c))]
+    ;; Does this squaddie collide with the 
+    [collide? (->m (is-a?/c positionable<%>) boolean?)])))
 
 ;; Constants
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -75,6 +76,10 @@
       (match directive
         [(move-toward pos) (make-object this% (handle-directive directive this))]
         [(hold-position) (make-object this% (send this position))]))
+    
+    (define/public-final (collide? positionable)
+      (< (distance (send this position) (send positionable position))
+         SPEED))
         
     (define/public (draw scn)
       (let ([pos (send this position)])
@@ -114,4 +119,9 @@
   (check-equal? (send squad1 handle-goal (location 1+0i 1))
                 (make-object test-squaddie% 1+0i))
   
-  (check-equal? (send squad1 handle-goal (location 0+0i 1)) squad1))
+  (check-equal? (send squad1 handle-goal (location 0+0i 1)) squad1)
+  
+  ;; collide? test
+  (check-false (send squad1 collide? squad2))
+  (check-true (send squad1 collide? squad1))
+  (check-true (send squad1 collide? (new test-squaddie% [pos 0+4i]))))

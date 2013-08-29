@@ -1,7 +1,7 @@
 #lang racket
 (require 2htdp/image
          2htdp/universe
-         (only-in "data.rkt"  WIDTH HEIGHT)
+         (only-in "data.rkt" WIDTH HEIGHT)
          "utilities/2vector.rkt"
          "goals.rkt")
 
@@ -65,11 +65,9 @@
     
     (define/public-final (game-over?) #f)
     
-    (define/public (draw scn)
-      (draw-goals (send squad draw scn)))
+    (define/public (draw scn) (draw-goals (send squad draw scn)))
     
-    (define/private (draw-goals scn)
-      (foldr draw-goal scn goals))
+    (define/private (draw-goals scn) (foldr draw-goal scn goals))
     
     (super-new)
     (inspect #f)))
